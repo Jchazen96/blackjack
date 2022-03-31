@@ -1,10 +1,11 @@
-let player1, playerCards, playerTotal, dealer, dealerTotal,  drawCard, newCards, cardValue, dealerCard1Value, faceCards, playerCard1Value, playerCard2Value, newCardValue, iterations
+let player1, playerCards, playerTotal, dealer, dealerTotal,  drawCard, newCards, cardValue, dealerCard1Value, faceCards, playerCard1Value, playerCard2Value, playerNewCardValue, iterations, dealerNewCardValue
 faceCards = {KING: 10, QUEEN: 10, JACK: 10, ACE: 11}
 player1 = document.getElementById('player1')
 playerCards = document.getElementById('playerCards')
 playerTotal = document.getElementById('player-total')
 dealer = document.getElementById('dealer')
-newCardValue = []
+playerNewCardValue = []
+dealerNewCardValue = []
 dealerTotal = 0
 playerTotal = 0
 iterations = 0
@@ -45,14 +46,23 @@ let request = async () => {
                 let drawCard = await draw1.json()
                 let newCard = document.createElement('img')
                 newCard.setAttribute('src', drawCard.cards[0].image)
-                newCardValue.push(drawCard.cards[0].value)
+                playerNewCardValue.push(drawCard.cards[0].value)
                 playerCards.append(newCard)
-                playerTotal = playerTotal + (parseInt(newCardValue[iterations]) ? parseInt(newCardValue[iterations]) : faceCards[newCardValue[iterations]])
+                playerTotal = playerTotal + (parseInt(playerNewCardValue[iterations]) ? parseInt(playerNewCardValue[iterations]) : faceCards[playerNewCardValue[iterations]])
                 ++iterations
                 if (playerTotal > 21) {alert('you busted')}
             })
-
-            player1.append(player1Hit)
+        let player1Stand = document.createElement('button')
+        player1Stand.innerText = "Stand"
+        player1Stand.addEventListener('click', async () => {
+            let dealerDraw = await fetch(`http://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=1`)
+            let dealerDrawCard = await dealerDraw.json()
+            let newCardDealer = document.createElement('img')
+            newCardDealer.setAttribute('src', dealerDrawCard.cards[0].image)
+           // dealerNewCardValue.push(dealerDrawCard.cards[0].value)
+           dealer.append(newCardDealer)
+        })
+            player1.append(player1Hit, player1Stand)
             
         }
         
