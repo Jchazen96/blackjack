@@ -1,12 +1,13 @@
-let player1, playerCards, playerTotal, dealer, dealerTotal,  drawCard, newCards, cardValue, dealerCard1Value, faceCards, playerCard1Value, playerCard2Value
+let player1, playerCards, playerTotal, dealer, dealerTotal,  drawCard, newCards, cardValue, dealerCard1Value, faceCards, playerCard1Value, playerCard2Value, newCardValue, iterations
 faceCards = {KING: 10, QUEEN: 10, JACK: 10, ACE: 11}
 player1 = document.getElementById('player1')
 playerCards = document.getElementById('playerCards')
 playerTotal = document.getElementById('player-total')
 dealer = document.getElementById('dealer')
-newCards = []
+newCardValue = []
 dealerTotal = 0
 playerTotal = 0
+iterations = 0
 
 
 let request = async () => {
@@ -32,7 +33,8 @@ let request = async () => {
         playerCard2.setAttribute('src',drawCards.cards[1].image)
         playerCard1Value = parseInt(drawCards.cards[0].value) ? parseInt(drawCards.cards[0].value) : faceCards[drawCards.cards[0].value]
         playerCard2Value = parseInt(drawCards.cards[1].value) ? parseInt(drawCards.cards[1].value) : faceCards[drawCards.cards[1].value]
-        console.log('player total = ', playerCard1Value + playerCard2Value)
+        playerTotal = playerCard1Value + playerCard2Value
+        console.log('player total = ', playerTotal)
 
         player1.append(playerCard1, playerCard2)
         
@@ -43,8 +45,12 @@ let request = async () => {
                 let drawCard = await draw1.json()
                 let newCard = document.createElement('img')
                 newCard.setAttribute('src', drawCard.cards[0].image)
-                newCards.push(drawCard.cards[0].value)
+                newCardValue.push(drawCard.cards[0].value)
                 playerCards.append(newCard)
+                playerTotal = playerTotal + (parseInt(newCardValue[iterations]) ? parseInt(newCardValue[iterations]) : faceCards[newCardValue[iterations]])
+                ++iterations
+                console.log(playerTotal)
+
             })
            player1.append(player1btn)
 
