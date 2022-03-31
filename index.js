@@ -38,9 +38,9 @@ let request = async () => {
 
         player1.append(playerCard1, playerCard2)
         
-        let player1btn = document.createElement('button')  
-       player1btn.innerText = "Hit Me"
-        player1btn.addEventListener('click', async () => {
+        let player1Hit = document.createElement('button')  
+        player1Hit.innerText = "Hit Me"
+        player1Hit.addEventListener('click', async () => {
                 let draw1 = await fetch(`http://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=1`)
                 let drawCard = await draw1.json()
                 let newCard = document.createElement('img')
@@ -49,11 +49,11 @@ let request = async () => {
                 playerCards.append(newCard)
                 playerTotal = playerTotal + (parseInt(newCardValue[iterations]) ? parseInt(newCardValue[iterations]) : faceCards[newCardValue[iterations]])
                 ++iterations
-                console.log(playerTotal)
-
+                if (playerTotal > 21) {alert('you busted')}
             })
-           player1.append(player1btn)
 
+            player1.append(player1Hit)
+            
         }
         
         request()
