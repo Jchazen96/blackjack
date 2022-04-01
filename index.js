@@ -1,11 +1,15 @@
-let player1, playerCards, playerTotal, dealer, dealerTotal,  drawCard, newCards, cardValue, dealerCard1Value, playerFaceCards, dealerFaceCards, playerCard1Value, playerCard2Value, playerNewCardValue, iterations, dealerIterations, dealerNewCardValue, fullPlayerCards, fullDealerCards
+let player1, playerCards, playerTotal, dealer, dealerTotal,  drawCard, newCards, cardValue, dealerCard1Value, playerFaceCards, dealerFaceCards, playerCard1Value, playerCard2Value, playerNewCardValue, iterations, dealerIterations, dealerNewCardValue, fullPlayerCards, fullDealerCards, playerSum, dealerSum, bankroll, bank, bet
 playerFaceCards = {KING: 10, QUEEN: 10, JACK: 10, ACE: 11}
 dealerFaceCards = {KING: 10, QUEEN: 10, JACK: 10, ACE: 11}
 player1 = document.getElementById('player1')
 playerCards = document.getElementById('playerCards')
-playerTotal = document.getElementById('player-total')
+playerSum = document.getElementById('player-total')
+dealerSum = document.getElementById('dealer-total')
 dealer = document.getElementById('dealer')
 playAgain = document.getElementById('play-again')
+betForm = document.getElementById('bettingForm')
+bank = document.getElementById('bankroll')
+bet = document.getElementById('bet') 
 playerNewCardValue = []
 fullPlayerCards = []
 dealerNewCardValue = []
@@ -14,9 +18,14 @@ dealerTotal = 0
 playerTotal = 0
 iterations = 0
 dealerIterations = 0
+bankroll = 500
+
+const add = (num1, num2) =>{
+    return num1 + num2
+}
 
 let request = async () => {
-    let req = await fetch('http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
+    let req = await fetch('http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
     let res = await req.json()
 
         let draw1 = await fetch(`http://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=1`)
@@ -25,12 +34,14 @@ let request = async () => {
         dealerCard1Value = parseInt(drawCard.cards[0].value) ? parseInt(drawCard.cards[0].value) : dealerFaceCards[drawCard.cards[0].value]
         dealerTotal = dealerCard1Value
         fullDealerCards.push(dealerCard1Value)
-        console.log('dealertotal =', dealerTotal)
+
 
         let dealerCard1 = document.createElement('img')
         dealerCard1.setAttribute('src', drawCard.cards[0].image) 
         dealer.append(dealerCard1)
-        
+        dealerSum.innerText = ""
+        dealerSum.append('Dealer Total : ', dealerTotal)
+
         let draw2 = await fetch(`http://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=2`)
         let drawCards = await draw2.json()
         let playerCard1 = document.createElement('img')
@@ -41,8 +52,15 @@ let request = async () => {
         playerCard2Value = parseInt(drawCards.cards[1].value) ? parseInt(drawCards.cards[1].value) : playerFaceCards[drawCards.cards[1].value]
         playerTotal = playerCard1Value + playerCard2Value
         fullPlayerCards.push(playerCard1Value, playerCard2Value)
-        console.log('player total = ', playerTotal)
-       // if (playerTotal === 21) {alert('BLACKJACK!')}
+        playerSum.innerText = ""
+        playerSum.append('Player Total : ', playerTotal)
+        bank.innerText = `Bankroll : ${bankroll}`
+        if (playerTotal === 21) {
+            setTimeout(() => {alert('BLACKJACK!')}, 300)
+            bankroll = parseInt(bankroll) + ((parseInt(bet.value)*2.5))
+            bank.innerText = `Bankroll : ${bankroll}`
+
+        }
 
         player1.append(playerCard1, playerCard2)
         let player1Hit = document.createElement('button')  
@@ -65,8 +83,15 @@ let request = async () => {
                    
                 }
             }
+            playerSum.innerText = ""
+            playerSum.append('Player Total : ', playerTotal)
             console.log('Player total = ', playerTotal)
-              //  if (playerTotal > 21) {alert('you busted')}
+              if (playerTotal > 21) {
+                setTimeout(() => {alert('you busted')}, 500)
+                bank.innerText = ""
+                bankroll = bankroll - bet.value
+                bank.innerText = `Bankroll : ${bankroll}`
+            }
             })
 
 
@@ -90,17 +115,31 @@ let request = async () => {
                     const result = fullDealerCards.splice(index, 1)
                 }
             }
-            console.log('Dealer total = ', dealerTotal)
+            dealerSum.innerText = ""
+            dealerSum.append('Dealer Total : ', dealerTotal)
+            
         }
-        // if (dealerTotal > 21) {
-        //     alert('Congratulations, you won!')
-        // }
-        //   else if (dealerTotal === playerTotal) {
-        //     alert(`It's a tie!`)
-        // } else if (dealerTotal > playerTotal) {
-        //     alert(`You lose!`)
-        // } else alert(`Congratulations, you won!`)
+//                setTimeout(() => {alert('you busted')}, 500)
 
+        if (dealerTotal > 21) {
+            setTimeout(() => {alert('Congratulations, you won!')}, 300)
+            bank.innerText = ""
+            bankroll = bankroll + bet.value
+            bank.innerText = `Bankroll : ${bankroll}`
+        }
+          else if (dealerTotal === playerTotal) {
+            setTimeout(() => {alert(`It's a tie!`)}, 300)
+        } else if (dealerTotal > playerTotal) {
+            setTimeout(() => {alert(`You lose!`)}, 300)
+            bank.innerText = ""
+            bankroll = bankroll - bet.value
+            bank.innerText = `Bankroll : ${bankroll}`
+        } else if (playerTotal > dealerTotal) {
+            setTimeout(() => {alert(`Congratulations, you won!`)}, 300)
+            bank.innerText = ""
+            bankroll = parseInt(bankroll) + parseInt(bet.value)
+            bank.innerHTML = `Bankroll : ${bankroll}`
+        }
         })
             player1.append(player1Hit, player1Stand)
             
@@ -118,7 +157,8 @@ playAgain.addEventListener('click', () => {
     playerTotal = 0
     iterations = 0
     dealerIterations = 0
-
+    bank.innerText = ""
+    bank.innerText = `Bankroll : ${bankroll}`
     player1.innerText = ""
     playerCards.innerText = ""
     dealer.innerText = ""

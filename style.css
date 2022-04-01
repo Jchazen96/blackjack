@@ -12,3 +12,11 @@ body {
     float: right;
 }
 
+#header {
+    color: white;
+    text-align: center;
+}
+
+#bettingForm {
+text-align: center;
+}

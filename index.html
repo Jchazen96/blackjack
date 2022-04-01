@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+    <h1 id="header"> Time to lose some money!</h1>
 <div id="top">
     <div class="left">
         
-        <div id="dealer">Dealer</div>
+        <div id="dealer"></div>
         <div id="dealer-total"></div>
     </div>
 
@@ -19,20 +20,26 @@
         
         <div id="playerCards"></div>
 
-        <div id="player-total"></div>
         <div id="player1"></div>
+        <div id="player-total"></div>
+        <div id="bankroll"></div>
 
     </div>
 </div>
 <div id="bottom">
     <div id="scores">
-        Dealer Score :
-        Player Score : 
+
     </div>
     <div id="play-again">
         <button>Play Again</button>
     </div>
 </div>
+
+<form id="bettingForm">
+    <label for="bet">How much do you want to bet? </label>
+    <input type="number" id="bet" name="bet" placeholder="Enter an amount to bet"><br>
+
+</form>
 
     <script src="./index.js"></script>
 </body>
