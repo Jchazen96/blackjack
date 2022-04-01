@@ -19,10 +19,8 @@ playerTotal = 0
 iterations = 0
 dealerIterations = 0
 bankroll = 500
+bet.value = 0
 
-const add = (num1, num2) =>{
-    return num1 + num2
-}
 
 let request = async () => {
     let req = await fetch('http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
@@ -85,7 +83,6 @@ let request = async () => {
             }
             playerSum.innerText = ""
             playerSum.append('Player Total : ', playerTotal)
-            console.log('Player total = ', playerTotal)
               if (playerTotal > 21) {
                 setTimeout(() => {alert('you busted')}, 500)
                 bank.innerText = ""
@@ -119,12 +116,12 @@ let request = async () => {
             dealerSum.append('Dealer Total : ', dealerTotal)
             
         }
-//                setTimeout(() => {alert('you busted')}, 500)
+
 
         if (dealerTotal > 21) {
             setTimeout(() => {alert('Congratulations, you won!')}, 300)
             bank.innerText = ""
-            bankroll = bankroll + bet.value
+            bankroll = parseInt(bankroll) + parseInt(bet.value)
             bank.innerText = `Bankroll : ${bankroll}`
         }
           else if (dealerTotal === playerTotal) {
