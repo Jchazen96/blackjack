@@ -51,6 +51,7 @@ let request = async () => {
                 playerCards.append(newCard)
                 playerTotal = playerTotal + (parseInt(playerNewCardValue[iterations]) ? parseInt(playerNewCardValue[iterations]) : faceCards[playerNewCardValue[iterations]])
                 ++iterations
+                console.log('Player total = ', playerTotal)
               //  if (playerTotal > 21) {alert('you busted')}
             })
         let player1Stand = document.createElement('button')
@@ -65,8 +66,17 @@ let request = async () => {
             dealer.append(newCardDealer)
             dealerTotal = dealerTotal + (parseInt(dealerNewCardValue[dealerIterations]) ? parseInt(dealerNewCardValue[dealerIterations]) : faceCards[dealerNewCardValue[dealerIterations]])
             ++dealerIterations
-            console.log(dealerTotal)
-           }
+            console.log('Dealer total = ', dealerTotal)
+        }
+        if (dealerTotal > 21) {
+            alert('Congratulations, you won!')
+        }
+          else if (dealerTotal === playerTotal) {
+            alert(`It's a tie!`)
+        } else if (dealerTotal > playerTotal) {
+            alert(`You lose!`)
+        } else alert(`Congratulations, you won!`)
+
         })
             player1.append(player1Hit, player1Stand)
             
