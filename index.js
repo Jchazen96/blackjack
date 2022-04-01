@@ -1,4 +1,4 @@
-let player1, playerCards, playerTotal, dealer, dealerTotal,  drawCard, newCards, cardValue, dealerCard1Value, faceCards, playerCard1Value, playerCard2Value, playerNewCardValue, iterations, dealerNewCardValue
+let player1, playerCards, playerTotal, dealer, dealerTotal,  drawCard, newCards, cardValue, dealerCard1Value, faceCards, playerCard1Value, playerCard2Value, playerNewCardValue, iterations, dealerIterations, dealerNewCardValue
 faceCards = {KING: 10, QUEEN: 10, JACK: 10, ACE: 11}
 player1 = document.getElementById('player1')
 playerCards = document.getElementById('playerCards')
@@ -9,10 +9,11 @@ dealerNewCardValue = []
 dealerTotal = 0
 playerTotal = 0
 iterations = 0
+dealerIterations = 0
 
 
 let request = async () => {
-    let req = await fetch('http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
+    let req = await fetch('http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
     let res = await req.json()
 
         let draw1 = await fetch(`http://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=1`)
@@ -50,17 +51,22 @@ let request = async () => {
                 playerCards.append(newCard)
                 playerTotal = playerTotal + (parseInt(playerNewCardValue[iterations]) ? parseInt(playerNewCardValue[iterations]) : faceCards[playerNewCardValue[iterations]])
                 ++iterations
-                if (playerTotal > 21) {alert('you busted')}
+              //  if (playerTotal > 21) {alert('you busted')}
             })
         let player1Stand = document.createElement('button')
         player1Stand.innerText = "Stand"
         player1Stand.addEventListener('click', async () => {
+           while (dealerTotal < 17) {
             let dealerDraw = await fetch(`http://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=1`)
             let dealerDrawCard = await dealerDraw.json()
             let newCardDealer = document.createElement('img')
             newCardDealer.setAttribute('src', dealerDrawCard.cards[0].image)
-           // dealerNewCardValue.push(dealerDrawCard.cards[0].value)
-           dealer.append(newCardDealer)
+            dealerNewCardValue.push(dealerDrawCard.cards[0].value)
+            dealer.append(newCardDealer)
+            dealerTotal = dealerTotal + (parseInt(dealerNewCardValue[dealerIterations]) ? parseInt(dealerNewCardValue[dealerIterations]) : faceCards[dealerNewCardValue[dealerIterations]])
+            ++dealerIterations
+            console.log(dealerTotal)
+           }
         })
             player1.append(player1Hit, player1Stand)
             
