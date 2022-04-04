@@ -23,10 +23,10 @@ bet.value = 0
 
 
 let request = async () => {
-    let req = await fetch('http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
+    let req = await fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
     let res = await req.json()
 
-        let draw1 = await fetch(`http://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=1`)
+        let draw1 = await fetch(`https://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=1`)
         let drawCard = await draw1.json()
         
         dealerCard1Value = parseInt(drawCard.cards[0].value) ? parseInt(drawCard.cards[0].value) : dealerFaceCards[drawCard.cards[0].value]
@@ -40,7 +40,7 @@ let request = async () => {
         dealerSum.innerText = ""
         dealerSum.append('Dealer Total : ', dealerTotal)
 
-        let draw2 = await fetch(`http://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=2`)
+        let draw2 = await fetch(`https://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=2`)
         let drawCards = await draw2.json()
         let playerCard1 = document.createElement('img')
         let playerCard2 = document.createElement('img')
@@ -64,7 +64,7 @@ let request = async () => {
         let player1Hit = document.createElement('button')  
         player1Hit.innerText = "Hit Me"
         player1Hit.addEventListener('click', async () => {
-            let draw1 = await fetch(`http://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=1`)
+            let draw1 = await fetch(`https://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=1`)
             let drawCard = await draw1.json()
             let newCard = document.createElement('img')
             newCard.setAttribute('src', drawCard.cards[0].image)
@@ -96,7 +96,7 @@ let request = async () => {
         player1Stand.innerText = "Stand"
         player1Stand.addEventListener('click', async () => {
            while (dealerTotal < 17) {
-            let dealerDraw = await fetch(`http://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=1`)
+            let dealerDraw = await fetch(`https://deckofcardsapi.com/api/deck/${res.deck_id}/draw/?count=1`)
             let dealerDrawCard = await dealerDraw.json()
             let newCardDealer = document.createElement('img')
             newCardDealer.setAttribute('src', dealerDrawCard.cards[0].image)
