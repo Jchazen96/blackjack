@@ -88,6 +88,8 @@ let request = async () => {
                 bank.innerText = ""
                 bankroll = bankroll - bet.value
                 bank.innerText = `Bankroll : ${bankroll}`
+                player1Hit.disabled = true
+                player1Stand.disabled = true
             }
             })
 
@@ -123,19 +125,27 @@ let request = async () => {
             bank.innerText = ""
             bankroll = parseInt(bankroll) + parseInt(bet.value)
             bank.innerText = `Bankroll : ${bankroll}`
+            player1Stand.disabled = true
+            player1Hit.disabled = true
         }
           else if (dealerTotal === playerTotal) {
             setTimeout(() => {alert(`It's a tie!`)}, 300)
+            player1Stand.disabled = true
+            player1Hit.disabled = true
         } else if (dealerTotal > playerTotal) {
             setTimeout(() => {alert(`You lose!`)}, 300)
             bank.innerText = ""
             bankroll = bankroll - bet.value
             bank.innerText = `Bankroll : ${bankroll}`
+            player1Stand.disabled = true
+            player1Hit.disabled = true
         } else if (playerTotal > dealerTotal) {
             setTimeout(() => {alert(`Congratulations, you won!`)}, 300)
             bank.innerText = ""
             bankroll = parseInt(bankroll) + parseInt(bet.value)
             bank.innerHTML = `Bankroll : ${bankroll}`
+            player1Stand.disabled = true
+            player1Hit.disabled = true
         }
         })
             player1.append(player1Hit, player1Stand)
